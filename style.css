@@ -5,6 +5,10 @@
   padding: 0;
 }
 
+.product-card.selected {
+  border: 2px solid #ff003b;
+  background: #fff5f7;
+}
 /* —— body + fonts —— */
 body {
   font-family: "Montserrat", Arial, Helvetica, sans-serif;
@@ -53,6 +57,92 @@ body {
   font-weight: 500;
 }
 
+/* ================================
+   RTL SUPPORT BASE
+================================ */
+body[dir="rtl"] {
+  direction: rtl;
+  text-align: right;
+}
+
+/* Flip flex layouts */
+body[dir="rtl"] .search-section,
+body[dir="rtl"] .selected-products,
+body[dir="rtl"] .chat-form {
+  flex-direction: row-reverse;
+}
+
+/* Product grid stays usable but aligns correctly */
+body[dir="rtl"] .products-grid {
+  direction: rtl;
+}
+
+/* Product cards text alignment */
+body[dir="rtl"] .product-info {
+  text-align: right;
+}
+
+/* Chat messages alignment */
+body[dir="rtl"] .user-message {
+  text-align: right;
+}
+
+body[dir="rtl"] .bot-message {
+  text-align: right;
+}
+
+/* Inputs should align right in RTL */
+body[dir="rtl"] input,
+body[dir="rtl"] select {
+  text-align: right;
+}
+
+/* Optional: move icons correctly */
+body[dir="rtl"] .fa-paper-plane {
+  transform: scaleX(-1);
+}
+/* ================================
+   RTL TOGGLE BUTTON (FANCY)
+================================ */
+.rtl-btn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 999;
+
+  padding: 10px 16px;
+  border-radius: 30px;
+
+  border: none;
+  cursor: pointer;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  color: #fff;
+  background: linear-gradient(135deg, #d6006e, #ff4da6);
+
+  box-shadow: 0 6px 15px rgba(214, 0, 110, 0.3);
+
+  transition: all 0.3s ease;
+}
+
+/* Hover effect */
+.rtl-btn:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 10px 20px rgba(214, 0, 110, 0.4);
+}
+
+/* Active (click feel) */
+.rtl-btn:active {
+  transform: scale(0.98);
+}
+
+/* RTL mode indicator (optional glow change) */
+body[dir="rtl"] .rtl-btn {
+  background: linear-gradient(135deg, #333, #666);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
 .search-section select:focus {
   outline: none;
   border-color: #666;
@@ -116,6 +206,7 @@ body {
   background: #000;
   color: #fff;
   border: none;
+  border-radius: 8px;
   padding: 12px;
   width: 48px;
   height: 48px;
@@ -188,6 +279,92 @@ body {
   min-height: 160px;
 }
 
+.product-card {
+  position: relative; /* IMPORTANT */
+  overflow: visible;
+}
+
+.description {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+
+  background: white;
+  padding: 10px;
+  font-size: 0.9rem;
+  color: #555;
+
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.3s ease;
+
+  pointer-events: none;
+  z-index: 10;
+}
+/* ================================
+   SEARCH + FILTER BAR
+================================ */
+.search-section {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  flex-wrap: wrap;
+}
+
+/* Search Input */
+#searchInput {
+  width: 280px;
+  padding: 12px 15px;
+
+  border: 1px solid #ddd;
+  border-radius: 30px;
+
+  font-size: 14px;
+  outline: none;
+
+  transition: all 0.3s ease;
+
+  background: #fff;
+}
+
+/* Focus effect (important UX polish) */
+#searchInput:focus {
+  border-color: #d6006e; /* L'Oréal-style pink */
+  box-shadow: 0 0 8px rgba(214, 0, 110, 0.2);
+}
+
+/* Category Dropdown */
+#categoryFilter {
+  width: 250px;
+  padding: 12px 15px;
+
+  border: 1px solid #ddd;
+  border-radius: 30px;
+
+  font-size: 14px;
+  outline: none;
+
+  background: #fff;
+  cursor: pointer;
+
+  transition: all 0.3s ease;
+}
+
+/* Hover + focus for dropdown */
+#categoryFilter:hover,
+#categoryFilter:focus {
+  border-color: #d6006e;
+  box-shadow: 0 0 8px rgba(214, 0, 110, 0.2);
+}
+.product-card:hover .description {
+  opacity: 1;
+  transform: translateY(0);
+}
 .product-card img {
   width: 110px;
   height: 110px;
@@ -231,7 +408,22 @@ body {
   flex-wrap: wrap;
   gap: 10px;
 }
+#showMoreBtn {
+  display: block;
+  margin: 20px auto;
+  padding: 12px 20px;
+  font-size: 16px;
+  background: #ff003b;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s;
+}
 
+#showMoreBtn:hover {
+  background: #e3a535;
+}
 .generate-btn {
   width: 100%;
   margin-top: 20px;
@@ -245,7 +437,26 @@ body {
   cursor: pointer;
   transition: background 0.3s;
 }
+.user-message {
+  background: #000;
+  color: #fff;
+  padding: 10px;
+  border-radius: 8px;
+  display: block;
+  width: fit-content;
+  margin-left: auto;
+  margin-bottom: 10px;
+}
 
+.bot-message {
+  background: #eee;
+  padding: 10px;
+  border-radius: 8px;
+  display: block;
+  width: fit-content;
+  margin-right: auto;
+  margin-bottom: 10px;
+}
 .generate-btn:hover {
   background: #666;
 }
